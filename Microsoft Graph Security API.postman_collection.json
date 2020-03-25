@@ -1,0 +1,681 @@
+{
+	"info": {
+		"_postman_id": "7f9bce02-7971-4794-ae30-106177ad3b64",
+		"name": "Microsoft Graph Security API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Alerts",
+			"item": [
+				{
+					"name": "List alerts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2944f52-d640-47a7-a805-55eff5bf0690",
+								"exec": [
+									"try {\r",
+									"    if (responseBody.indexOf(\"InvalidAuthenticationToken\") !== -1)\r",
+									"    {\r",
+									"        console.log(\"You need to run *Get App-Only Access Token* request first.\");\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        if (pm.environment.get(\"UserId\") === \"\")\r",
+									"        {\r",
+									"            console.log(\"You need to run *Application | Get Users* request first or set a UserId environment variable.\");\r",
+									"        }\r",
+									"        else\r",
+									"        {\r",
+									"            if (pm.response.status === \"Forbidden\")\r",
+									"            {\r",
+									"                console.log(\"You need to add user delegated permissions in your application to at least *Mail.Read.All* in portal.azure.com and then consent as user or Grant admin consent in portal. And re-run *Application | Get App-Only Access Token* request to update access token. \");\r",
+									"            }\r",
+									"            else\r",
+									"            {\r",
+									"                if (responseBody.indexOf(\"ResourceNotFound\") !== -1)\r",
+									"                {\r",
+									"                    console.log(\"You need to pick a UserId who has a license for a mailbox.\");\r",
+									"                }\r",
+									"                else\r",
+									"                {\r",
+									"                    var json = JSON.parse(responseBody);\r",
+									"                    postman.setEnvironmentVariable(\"MessageId\", json.value[0].id);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"catch (e) {\r",
+									"    console.log(e);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AppAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "SdkVersion",
+								"value": "postman-graph/v1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://graph.microsoft.com/v1.0/users/{{UserId}}/messages",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"microsoft",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"users",
+								"{{UserId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get alert",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2944f52-d640-47a7-a805-55eff5bf0690",
+								"exec": [
+									"try {\r",
+									"    if (responseBody.indexOf(\"InvalidAuthenticationToken\") !== -1)\r",
+									"    {\r",
+									"        console.log(\"You need to run *Get App-Only Access Token* request first.\");\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        if (pm.environment.get(\"UserId\") === \"\")\r",
+									"        {\r",
+									"            console.log(\"You need to run *Application | Get Users* request first or set a UserId environment variable.\");\r",
+									"        }\r",
+									"        else\r",
+									"        {\r",
+									"            if (pm.response.status === \"Forbidden\")\r",
+									"            {\r",
+									"                console.log(\"You need to add user delegated permissions in your application to at least *Mail.Read.All* in portal.azure.com and then consent as user or Grant admin consent in portal. And re-run *Application | Get App-Only Access Token* request to update access token. \");\r",
+									"            }\r",
+									"            else\r",
+									"            {\r",
+									"                if (responseBody.indexOf(\"ResourceNotFound\") !== -1)\r",
+									"                {\r",
+									"                    console.log(\"You need to pick a UserId who has a license for a mailbox.\");\r",
+									"                }\r",
+									"                else\r",
+									"                {\r",
+									"                    var json = JSON.parse(responseBody);\r",
+									"                    postman.setEnvironmentVariable(\"MessageId\", json.value[0].id);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"catch (e) {\r",
+									"    console.log(e);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AppAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "SdkVersion",
+								"value": "postman-graph/v1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://graph.microsoft.com/v1.0/users/{{UserId}}/messages",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"microsoft",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"users",
+								"{{UserId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "https://docs.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-1.0\n",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Secure Score",
+			"item": [
+				{
+					"name": "Get secureScore",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2944f52-d640-47a7-a805-55eff5bf0690",
+								"exec": [
+									"try {\r",
+									"    if (responseBody.indexOf(\"InvalidAuthenticationToken\") !== -1)\r",
+									"    {\r",
+									"        console.log(\"You need to run *Get App-Only Access Token* request first.\");\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        if (pm.environment.get(\"UserId\") === \"\")\r",
+									"        {\r",
+									"            console.log(\"You need to run *Application | Get Users* request first or set a UserId environment variable.\");\r",
+									"        }\r",
+									"        else\r",
+									"        {\r",
+									"            if (pm.response.status === \"Forbidden\")\r",
+									"            {\r",
+									"                console.log(\"You need to add user delegated permissions in your application to at least *Mail.Read.All* in portal.azure.com and then consent as user or Grant admin consent in portal. And re-run *Application | Get App-Only Access Token* request to update access token. \");\r",
+									"            }\r",
+									"            else\r",
+									"            {\r",
+									"                if (responseBody.indexOf(\"ResourceNotFound\") !== -1)\r",
+									"                {\r",
+									"                    console.log(\"You need to pick a UserId who has a license for a mailbox.\");\r",
+									"                }\r",
+									"                else\r",
+									"                {\r",
+									"                    var json = JSON.parse(responseBody);\r",
+									"                    postman.setEnvironmentVariable(\"MessageId\", json.value[0].id);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"catch (e) {\r",
+									"    console.log(e);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AppAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "SdkVersion",
+								"value": "postman-graph/v1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://graph.microsoft.com/v1.0/users/{{UserId}}/messages",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"microsoft",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"users",
+								"{{UserId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List secureScores",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2944f52-d640-47a7-a805-55eff5bf0690",
+								"exec": [
+									"try {\r",
+									"    if (responseBody.indexOf(\"InvalidAuthenticationToken\") !== -1)\r",
+									"    {\r",
+									"        console.log(\"You need to run *Get App-Only Access Token* request first.\");\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        if (pm.environment.get(\"UserId\") === \"\")\r",
+									"        {\r",
+									"            console.log(\"You need to run *Application | Get Users* request first or set a UserId environment variable.\");\r",
+									"        }\r",
+									"        else\r",
+									"        {\r",
+									"            if (pm.response.status === \"Forbidden\")\r",
+									"            {\r",
+									"                console.log(\"You need to add user delegated permissions in your application to at least *Mail.Read.All* in portal.azure.com and then consent as user or Grant admin consent in portal. And re-run *Application | Get App-Only Access Token* request to update access token. \");\r",
+									"            }\r",
+									"            else\r",
+									"            {\r",
+									"                if (responseBody.indexOf(\"ResourceNotFound\") !== -1)\r",
+									"                {\r",
+									"                    console.log(\"You need to pick a UserId who has a license for a mailbox.\");\r",
+									"                }\r",
+									"                else\r",
+									"                {\r",
+									"                    var json = JSON.parse(responseBody);\r",
+									"                    postman.setEnvironmentVariable(\"MessageId\", json.value[0].id);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"catch (e) {\r",
+									"    console.log(e);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AppAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "SdkVersion",
+								"value": "postman-graph/v1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://graph.microsoft.com/v1.0/users/{{UserId}}/messages",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"microsoft",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"users",
+								"{{UserId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "https://docs.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-1.0\n",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "SecureScoreControlProfile",
+			"item": [
+				{
+					"name": "Get secureScoreControlProfile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2944f52-d640-47a7-a805-55eff5bf0690",
+								"exec": [
+									"try {\r",
+									"    if (responseBody.indexOf(\"InvalidAuthenticationToken\") !== -1)\r",
+									"    {\r",
+									"        console.log(\"You need to run *Get App-Only Access Token* request first.\");\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        if (pm.environment.get(\"UserId\") === \"\")\r",
+									"        {\r",
+									"            console.log(\"You need to run *Application | Get Users* request first or set a UserId environment variable.\");\r",
+									"        }\r",
+									"        else\r",
+									"        {\r",
+									"            if (pm.response.status === \"Forbidden\")\r",
+									"            {\r",
+									"                console.log(\"You need to add user delegated permissions in your application to at least *Mail.Read.All* in portal.azure.com and then consent as user or Grant admin consent in portal. And re-run *Application | Get App-Only Access Token* request to update access token. \");\r",
+									"            }\r",
+									"            else\r",
+									"            {\r",
+									"                if (responseBody.indexOf(\"ResourceNotFound\") !== -1)\r",
+									"                {\r",
+									"                    console.log(\"You need to pick a UserId who has a license for a mailbox.\");\r",
+									"                }\r",
+									"                else\r",
+									"                {\r",
+									"                    var json = JSON.parse(responseBody);\r",
+									"                    postman.setEnvironmentVariable(\"MessageId\", json.value[0].id);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"catch (e) {\r",
+									"    console.log(e);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AppAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "SdkVersion",
+								"value": "postman-graph/v1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://graph.microsoft.com/v1.0/users/{{UserId}}/messages",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"microsoft",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"users",
+								"{{UserId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List secureScoreControlProfiles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e2944f52-d640-47a7-a805-55eff5bf0690",
+								"exec": [
+									"try {\r",
+									"    if (responseBody.indexOf(\"InvalidAuthenticationToken\") !== -1)\r",
+									"    {\r",
+									"        console.log(\"You need to run *Get App-Only Access Token* request first.\");\r",
+									"    }\r",
+									"    else\r",
+									"    {\r",
+									"        if (pm.environment.get(\"UserId\") === \"\")\r",
+									"        {\r",
+									"            console.log(\"You need to run *Application | Get Users* request first or set a UserId environment variable.\");\r",
+									"        }\r",
+									"        else\r",
+									"        {\r",
+									"            if (pm.response.status === \"Forbidden\")\r",
+									"            {\r",
+									"                console.log(\"You need to add user delegated permissions in your application to at least *Mail.Read.All* in portal.azure.com and then consent as user or Grant admin consent in portal. And re-run *Application | Get App-Only Access Token* request to update access token. \");\r",
+									"            }\r",
+									"            else\r",
+									"            {\r",
+									"                if (responseBody.indexOf(\"ResourceNotFound\") !== -1)\r",
+									"                {\r",
+									"                    console.log(\"You need to pick a UserId who has a license for a mailbox.\");\r",
+									"                }\r",
+									"                else\r",
+									"                {\r",
+									"                    var json = JSON.parse(responseBody);\r",
+									"                    postman.setEnvironmentVariable(\"MessageId\", json.value[0].id);\r",
+									"                }\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"catch (e) {\r",
+									"    console.log(e);\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AppAccessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "SdkVersion",
+								"value": "postman-graph/v1.0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://graph.microsoft.com/v1.0/users/{{UserId}}/messages",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"microsoft",
+								"com"
+							],
+							"path": [
+								"v1.0",
+								"users",
+								"{{UserId}}",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "https://docs.microsoft.com/en-us/graph/api/resources/security-api-overview?view=graph-rest-1.0\n",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get App-Only Access Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a9ee25f8-890e-499d-9b0a-63df29cf3673",
+						"exec": [
+							"try {\r",
+							"    if (pm.environment.get(\"ClientID\") === \"\")\r",
+							"    {\r",
+							"        console.log(\"You need to enter *ClientID* environment variable first.\");\r",
+							"    }\r",
+							"    if (pm.environment.get(\"ClientSecret\") === \"\")\r",
+							"    {\r",
+							"        console.log(\"You need to enter *ClientSecret* environment variable first.\");\r",
+							"    }\r",
+							"    if (pm.environment.get(\"TenantID\") === \"\")\r",
+							"    {\r",
+							"        console.log(\"You need to enter *TenantID* environment variable first.\");\r",
+							"    }\r",
+							"    else\r",
+							"    {\r",
+							"        var json = JSON.parse(responseBody);\r",
+							"        postman.setEnvironmentVariable(\"AppAccessToken\", json.access_token);\r",
+							"    }\r",
+							"}\r",
+							"catch (e) {\r",
+							"    console.log(e);\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "SdkVersion",
+						"value": "postman-graph/v1.0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{ClientID}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{ClientSecret}}",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "https://graph.microsoft.com/.default",
+							"type": "text"
+						}
+					],
+					"options": {
+						"urlencoded": {}
+					}
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{TenantID}}/oauth2/v2.0/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{TenantID}}",
+						"oauth2",
+						"v2.0",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
